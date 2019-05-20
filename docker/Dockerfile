@@ -29,4 +29,5 @@ ENV RACK_ENV production
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 3000
+EXPOSE 8080
 CMD ["bundle", "exec", "rackup", "-o", "0.0.0.0", "-p", "3000"]
