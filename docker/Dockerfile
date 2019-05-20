@@ -18,6 +18,10 @@ RUN cd /opt && \
     tar -xf jodconverter-tomcat.tar.gz && \
     rm jodconverter-tomcat.tar.gz
 
+ARG max_size=104857600
+RUN sed -i 's|<value>4194304</value><!-- 4MB -->|<value>104857600</value>|' \
+      /opt/apache-tomcat-8.0.26/webapps/converter/WEB-INF/applicationContext.xml
+
 RUN useradd ruby && mkdir /converter
 
 COPY Gemfile Gemfile.lock /converter/
