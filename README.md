@@ -10,7 +10,7 @@ docker run --rm -it -p 3000:3000 -p 8080:8080 evserykh/converter
 
 ## Sinatra Web Application
 
-This is a wrapper supports encoding input text documents to UTF-8 before conversion.
+This is a wrapper supporting encoding input text documents to UTF-8 before conversion.
 
 ```
 curl -X POST -F file=@/path/to/file.xls http://localhost:3000/convert -F from='application/vnd.ms-excel' -F to='text/csv' -o output.csv
