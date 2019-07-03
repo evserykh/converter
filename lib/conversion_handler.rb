@@ -23,7 +23,8 @@ class ConversionHandler
         content_type: from,
         accept: to
       },
-      payload: File.read(encoded_file_path)
+      payload: File.read(encoded_file_path),
+      timeout: nil
     )
     Tempfile.new.tap do |tempfile|
       tempfile.binmode
