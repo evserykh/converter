@@ -15,6 +15,7 @@ class ConversionHandler
 
     encoded_file_path = TextFileEncoder.new(tempfile.path).encode
     return unless encoded_file_path
+    return File.new(encoded_file_path) if same_format?
 
     response = RestClient::Request.execute(
       method: 'post',
@@ -63,5 +64,9 @@ class ConversionHandler
 
   def tempfile
     file['tempfile']
+  end
+
+  def same_format?
+    from == to
   end
 end
