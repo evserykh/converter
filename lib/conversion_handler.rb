@@ -25,7 +25,7 @@ class ConversionHandler
         accept: to
       },
       payload: File.read(encoded_file_path),
-      timeout: nil
+      timeout: libreoffice_timeout
     )
     Tempfile.new.tap do |tempfile|
       tempfile.binmode
@@ -38,6 +38,11 @@ class ConversionHandler
 
   def libreoffice_url
     'http://127.0.0.1:8080/converter/service'
+  end
+
+  def libreoffice_timeout
+    timeout = params['timeout'].to_i
+    timeout.zero? ? 180 : timeout
   end
 
   def response(status, message)
