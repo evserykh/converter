@@ -1,6 +1,6 @@
 require File.expand_path('conversion_handler', __dir__)
 
-class App < Sinatra::Base
+class App < Sinatra::Application
   error ConversionHandler::InvalidParams do
     [422, env['sinatra.error'].message]
   end
