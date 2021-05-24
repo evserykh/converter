@@ -3,9 +3,16 @@ FROM evserykh/rails:ruby2.6
 RUN apt-get update && \
     apt-get install -y --no-install-recommends enca \
                                                libreoffice \
+                                               libreoffice-l10n-ru \
+                                               locales \
+                                               locales-all \
                                                openjdk-8-jre-headless \
                                                uchardet \
                                                unzip
+
+ENV LANG ru_RU.UTF-8
+ENV LANGUAGE ru_RU:ru
+ENV LC_ALL ru_RU.UTF-8
 
 RUN set -eux; \
 	apt-get update; \
@@ -18,7 +25,7 @@ RUN cd /opt && \
     tar -xf jodconverter-tomcat.tar.gz && \
     rm jodconverter-tomcat.tar.gz
 
-RUN useradd ruby
+RUN useradd -m -s /bin/bash ruby && mkdir /converter
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]

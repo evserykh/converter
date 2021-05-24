@@ -3,9 +3,16 @@ FROM evserykh/rails:ruby2.6
 RUN apt-get update && \
     apt-get install -y --no-install-recommends enca \
                                                libreoffice \
+                                               libreoffice-l10n-ru \
+                                               locales \
+                                               locales-all \
                                                openjdk-8-jre-headless \
                                                uchardet \
                                                unzip
+
+ENV LANG ru_RU.UTF-8
+ENV LANGUAGE ru_RU:ru
+ENV LC_ALL ru_RU.UTF-8
 
 RUN set -eux; \
 	apt-get update; \
@@ -22,7 +29,7 @@ ARG max_size=104857600
 RUN sed -i 's|<value>4194304</value><!-- 4MB -->|<value>104857600</value>|' \
       /opt/apache-tomcat-8.0.26/webapps/converter/WEB-INF/applicationContext.xml
 
-RUN useradd ruby && mkdir /converter
+RUN useradd -m -s /bin/bash ruby && mkdir /converter
 
 COPY Gemfile Gemfile.lock /converter/
 WORKDIR /converter
