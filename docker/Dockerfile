@@ -1,12 +1,15 @@
 FROM evserykh/rails:ruby2.6
 
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends enca \
+                                               libfile-mimeinfo-perl \
                                                libreoffice \
                                                libreoffice-l10n-ru \
                                                locales \
                                                locales-all \
-                                               openjdk-8-jre-headless \
+                                               openjdk-11-jre-headless \
                                                uchardet \
                                                unzip
 

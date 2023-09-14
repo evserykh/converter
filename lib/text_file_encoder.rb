@@ -15,11 +15,11 @@ class TextFileEncoder
   private
 
   def mime
-    @mime ||= `file -i #{path}`
+    @mime ||= `mimetype -b #{path}`
   end
 
   def text?
-    mime.match(%r{text/plain})
+    mime.include?('text/plain') || mime.include?('text/csv')
   end
 
   def encoding
