@@ -2,6 +2,10 @@ FROM evserykh/rails:ruby2.6
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 
+RUN apt update && apt install -y --no-install-recommends libasound2 libasound2-data libxtst6
+COPY vendor/bellsoft-jre8u382+6-linux-amd64.deb java.deb
+RUN dpkg -i java.deb && rm java.deb
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends enca \
                                                libfile-mimeinfo-perl \
@@ -9,7 +13,6 @@ RUN apt-get update && \
                                                libreoffice-l10n-ru \
                                                locales \
                                                locales-all \
-                                               openjdk-11-jre-headless \
                                                uchardet \
                                                unzip
 
@@ -23,7 +26,7 @@ RUN set -eux; \
 # verify that the binary works
 	gosu nobody true
 
-COPY jodconverter-tomcat.tar.gz /opt
+COPY vendor/jodconverter-tomcat.tar.gz /opt
 RUN cd /opt && \
     tar -xf jodconverter-tomcat.tar.gz && \
     rm jodconverter-tomcat.tar.gz
