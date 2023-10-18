@@ -3,6 +3,7 @@
 echo 'Liveness probe...'
 cd /converter/misc
 curl -m 5                               \
+     --fail                             \
      -X POST                            \
      http://localhost:3000/convert      \
      -F file=@example.xls               \
