@@ -10,18 +10,25 @@ RUN apt-get update --allow-releaseinfo-change -o Acquire::Check-Valid-Until=fals
     apt-get install -y --no-install-recommends \
                        libasound2 \
                        libasound2-data \
-                       libxtst6 \
+                       libxtst6
+
+COPY vendor/bellsoft-jre8u382+6-linux-amd64.deb java.deb
+RUN dpkg -i java.deb && rm java.deb
+
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-runtime-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+RUN apt-get update --allow-releaseinfo-change -o Acquire::Check-Valid-Until=false && \
+    apt-get install -y --no-install-recommends \
                        enca \
                        libfile-mimeinfo-perl \
                        libreoffice \
+                       libreoffice-java-common \
                        libreoffice-l10n-ru \
                        locales \
                        locales-all \
                        uchardet \
                        unzip
-
-COPY vendor/bellsoft-jre8u382+6-linux-amd64.deb java.deb
-RUN dpkg -i java.deb && rm java.deb
 
 ENV LANG=ru_RU.UTF-8
 ENV LANGUAGE=ru_RU:ru
