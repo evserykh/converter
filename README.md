@@ -25,7 +25,7 @@ Visit [http://localhost:8080/converter](http://localhost:8080/converter)
 ```
 git clone https://github.com/evserykh/converter.git && cd converter
 mkdir .bundle
-docker-compose build
-docker-compose run --rm app bundle
-docker-compose up
+docker compose build
+docker compose run --rm app bundle
+docker compose up
 ```
