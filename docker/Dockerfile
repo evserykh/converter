@@ -2,23 +2,37 @@ FROM evserykh/rails:ruby2.6
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 
-RUN apt update && apt install -y --no-install-recommends libasound2 libasound2-data libxtst6
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list
+
+RUN apt-get update --allow-releaseinfo-change -o Acquire::Check-Valid-Until=false && \
+    apt-get install -y --no-install-recommends \
+                       libasound2 \
+                       libasound2-data \
+                       libxtst6
+
 COPY vendor/bellsoft-jre8u382+6-linux-amd64.deb java.deb
 RUN dpkg -i java.deb && rm java.deb
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends enca \
-                                               libfile-mimeinfo-perl \
-                                               libreoffice \
-                                               libreoffice-l10n-ru \
-                                               locales \
-                                               locales-all \
-                                               uchardet \
-                                               unzip
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-runtime-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
 
-ENV LANG ru_RU.UTF-8
-ENV LANGUAGE ru_RU:ru
-ENV LC_ALL ru_RU.UTF-8
+RUN apt-get update --allow-releaseinfo-change -o Acquire::Check-Valid-Until=false && \
+    apt-get install -y --no-install-recommends \
+                       enca \
+                       libfile-mimeinfo-perl \
+                       libreoffice \
+                       libreoffice-java-common \
+                       libreoffice-l10n-ru \
+                       locales \
+                       locales-all \
+                       uchardet \
+                       unzip
+
+ENV LANG=ru_RU.UTF-8
+ENV LANGUAGE=ru_RU:ru
+ENV LC_ALL=ru_RU.UTF-8
 
 RUN set -eux; \
 	apt-get update; \
@@ -41,7 +55,7 @@ COPY Gemfile Gemfile.lock /converter/
 WORKDIR /converter
 RUN bundle install
 COPY . /converter
-ENV RACK_ENV production
+ENV RACK_ENV=production
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
